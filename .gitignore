@@ -1,0 +1,17 @@
+appDemo/target/*
+appDemo/.settings/*
+appDemo/.mvn/*
+appDemo/.classpath
+appDemo/.project
+
+routerDemo/target/*
+routerDemo/.settings/*
+routerDemo/.mvn/*
+routerDemo/.classpath
+routerDemo/.project
+
+authorServer/target/*
+authorServer/.settings/*
+authorServer/.mvn/*
+authorServer/.classpath
+authorServer/.project
