@@ -11,10 +11,10 @@
 	<description>author project</description>
 
 	<parent>
-		<groupId>com.datou</groupId>
-		<artifactId>parent</artifactId>
-		<version>1.0.0</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.4.4.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
