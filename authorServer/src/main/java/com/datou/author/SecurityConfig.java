@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -29,4 +30,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.formLogin().and().httpBasic().disable().anonymous().disable().authorizeRequests().anyRequest()
 				.authenticated();
 	}
+	
 }
