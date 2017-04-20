@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 
 @Configuration
@@ -16,13 +17,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final Logger log = LoggerFactory.getLogger(AuthorServerApplication.class);
-
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	@Override
 	@Autowired // <-- This is crucial otherwise Spring Boot creates its own
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		log.info("Defining inMemoryAuthentication (2 users)");
-		auth.inMemoryAuthentication().withUser("user").password("password").roles("USER").and().withUser("admin")
-				.password("password").roles("USER", "ADMIN");
+		log.info("use UserDetailsService");
+		auth.userDetailsService(userDetailsService);
 	}
 
 	@Override
