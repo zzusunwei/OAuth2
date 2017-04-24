@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.provider.approval.Approval.ApprovalSt
 
 import java.util.Objects;
 
-@Document
+@Document(collection="mongoApproval")
 public class MongoApproval {
 
     @Id
@@ -24,13 +24,13 @@ public class MongoApproval {
     }
 
     @PersistenceConstructor
-    public MongoApproval(final String id,
-                         final String userId,
-                         final String clientId,
-                         final String scope,
-                         final ApprovalStatus status,
-                         final LocalDate expiresAt,
-                         final LocalDate lastUpdatedAt) {
+    public MongoApproval(String id,
+                          String userId,
+                          String clientId,
+                          String scope,
+                          ApprovalStatus status,
+                          LocalDate expiresAt,
+                          LocalDate lastUpdatedAt) {
         this.id = id;
         this.userId = userId;
         this.clientId = clientId;

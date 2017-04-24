@@ -6,13 +6,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import com.datou.author.repositories.UserRepository;
+import com.datou.author.repositories.MongoUserRepository;
 
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService{
 
 	@Autowired
-	private UserRepository userRepository;
+	private MongoUserRepository userRepository;
 	
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {

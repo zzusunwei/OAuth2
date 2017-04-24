@@ -18,40 +18,30 @@ import com.google.common.base.Function;
 
 @Component
 public class MongoApprovalStore implements ApprovalStore {
-
-    private final MongoApprovalRepository mongoApprovalRepository;
+	@Autowired
+    private MongoApprovalRepository mongoApprovalRepository;
 
     private boolean handleRevocationsAsExpiry = false;
 
-    @Autowired
-    public MongoApprovalStore(final MongoApprovalRepository mongoApprovalRepository) {
-        this.mongoApprovalRepository = mongoApprovalRepository;
-    }
-
     @Override
-    public boolean addApprovals(final Collection<Approval> approvals) {
-        final Collection<MongoApproval> mongoApprovals = transform(approvals, toMongoApproval());
+    public boolean addApprovals( Collection<Approval> approvals) {
+         Collection<MongoApproval> mongoApprovals = transform(approvals, toMongoApproval());
 
         return mongoApprovalRepository.updateOrCreate(mongoApprovals);
     }
 
     @Override
-    public boolean revokeApprovals(final Collection<Approval> approvals) {
+    public boolean revokeApprovals( Collection<Approval> approvals) {
         boolean success = true;
-
-        final Collection<MongoApproval> mongoApprovals = transform(approvals, toMongoApproval());
-
-        for (final MongoApproval mongoApproval : mongoApprovals) {
+        Collection<MongoApproval> mongoApprovals = transform(approvals, toMongoApproval());
+        for (MongoApproval mongoApproval : mongoApprovals) {
             if (handleRevocationsAsExpiry) {
-                final boolean updateResult = mongoApprovalRepository.updateExpiresAt(LocalDate.now(), mongoApproval);
+                boolean updateResult = mongoApprovalRepository.updateExpiresAt(LocalDate.now(), mongoApproval);
                 if (!updateResult) {
                     success = false;
                 }
-
-            }
-            else {
-                final boolean deleteResult = mongoApprovalRepository.deleteByUserIdAndClientIdAndScope(mongoApproval);
-
+            }else {
+                 boolean deleteResult = mongoApprovalRepository.deleteByUserIdAndClientIdAndScope(mongoApproval);
                 if (!deleteResult) {
                     success = false;
                 }
@@ -61,16 +51,16 @@ public class MongoApprovalStore implements ApprovalStore {
     }
 
     @Override
-    public Collection<Approval> getApprovals(final String userId,
-                                             final String clientId) {
-        final List<MongoApproval> mongoApprovals = mongoApprovalRepository.findByUserIdAndClientId(userId, clientId);
+    public Collection<Approval> getApprovals(String userId,
+                                              String clientId) {
+         List<MongoApproval> mongoApprovals = mongoApprovalRepository.findByUserIdAndClientId(userId, clientId);
         return transform(mongoApprovals, toApproval());
     }
 
     private Function<Approval, MongoApproval> toMongoApproval() {
         return new Function<Approval, MongoApproval>() {
             @Override
-            public MongoApproval apply(final Approval approval) {
+            public MongoApproval apply(Approval approval) {
                 return new MongoApproval(UUID.randomUUID().toString(),
                         approval.getUserId(),
                         approval.getClientId(),
@@ -85,7 +75,7 @@ public class MongoApprovalStore implements ApprovalStore {
     private Function<MongoApproval, Approval> toApproval() {
         return new Function<MongoApproval, Approval>() {
             @Override
-            public Approval apply(final MongoApproval mongoApproval) {
+            public Approval apply(MongoApproval mongoApproval) {
                 return new Approval(mongoApproval.getUserId(),
                         mongoApproval.getClientId(),
                         mongoApproval.getScope(),

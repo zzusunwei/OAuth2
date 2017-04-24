@@ -8,16 +8,16 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
-import com.datou.author.model.User;
+import com.datou.author.model.MongoUser;
 import com.mongodb.WriteResult;
 
 @Component
-public class UserRepositoryImpl implements UserRepositoryBase {
+public class MongoUserRepositoryImpl implements MongoUserRepositoryBase {
 
     private final MongoTemplate mongoTemplate;
 
     @Autowired
-    public UserRepositoryImpl(final MongoTemplate mongoTemplate) {
+    public MongoUserRepositoryImpl(final MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
@@ -26,7 +26,7 @@ public class UserRepositoryImpl implements UserRepositoryBase {
                                final String newPassword,
                                final String username) {
         final Query searchUserQuery = new Query(where("username").is(username).andOperator(where("password").is(oldPassword)));
-        final WriteResult result = mongoTemplate.updateFirst(searchUserQuery, update("password", newPassword), User.class);
+        final WriteResult result = mongoTemplate.updateFirst(searchUserQuery, update("password", newPassword), MongoUser.class);
         return result.getN() == 1? true : false;
     }
 }

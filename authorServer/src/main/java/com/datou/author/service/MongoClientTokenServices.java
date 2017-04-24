@@ -16,31 +16,24 @@ import com.datou.author.repositories.MongoOAuth2ClientTokenRepository;
 
 @Component
 public class MongoClientTokenServices implements ClientTokenServices {
-
-    private final MongoOAuth2ClientTokenRepository mongoOAuth2ClientTokenRepository;
-
-    private final ClientKeyGenerator clientKeyGenerator;
-
-    @Autowired
-    public MongoClientTokenServices(final MongoOAuth2ClientTokenRepository mongoOAuth2ClientTokenRepository,
-                                    final ClientKeyGenerator clientKeyGenerator) {
-        this.mongoOAuth2ClientTokenRepository = mongoOAuth2ClientTokenRepository;
-        this.clientKeyGenerator = clientKeyGenerator;
-    }
+	@Autowired
+    private MongoOAuth2ClientTokenRepository mongoOAuth2ClientTokenRepository;
+	@Autowired
+    private ClientKeyGenerator clientKeyGenerator;
 
     @Override
-    public OAuth2AccessToken getAccessToken(final OAuth2ProtectedResourceDetails resource,
-                                            final Authentication authentication) {
-        final MongoOAuth2ClientToken mongoOAuth2ClientToken = mongoOAuth2ClientTokenRepository.findByAuthenticationId(clientKeyGenerator.extractKey(resource, authentication));
+    public OAuth2AccessToken getAccessToken( OAuth2ProtectedResourceDetails resource,
+                                             Authentication authentication) {
+        MongoOAuth2ClientToken mongoOAuth2ClientToken = mongoOAuth2ClientTokenRepository.findByAuthenticationId(clientKeyGenerator.extractKey(resource, authentication));
         return SerializationUtils.deserialize(mongoOAuth2ClientToken.getToken());
     }
 
     @Override
-    public void saveAccessToken(final OAuth2ProtectedResourceDetails resource,
-                                final Authentication authentication,
-                                final OAuth2AccessToken accessToken) {
+    public void saveAccessToken( OAuth2ProtectedResourceDetails resource,
+                                 Authentication authentication,
+                                 OAuth2AccessToken accessToken) {
         removeAccessToken(resource, authentication);
-        final MongoOAuth2ClientToken mongoOAuth2ClientToken = new MongoOAuth2ClientToken(UUID.randomUUID().toString(),
+         MongoOAuth2ClientToken mongoOAuth2ClientToken = new MongoOAuth2ClientToken(UUID.randomUUID().toString(),
                 accessToken.getValue(),
                 SerializationUtils.serialize(accessToken),
                 clientKeyGenerator.extractKey(resource, authentication),
@@ -51,8 +44,8 @@ public class MongoClientTokenServices implements ClientTokenServices {
     }
 
     @Override
-    public void removeAccessToken(final OAuth2ProtectedResourceDetails resource,
-                                  final Authentication authentication) {
+    public void removeAccessToken( OAuth2ProtectedResourceDetails resource,
+                                   Authentication authentication) {
         mongoOAuth2ClientTokenRepository.deleteByAuthenticationId(clientKeyGenerator.extractKey(resource, authentication));
     }
 }

@@ -1,6 +1,6 @@
 package com.datou.author.repositories;
 
-public interface UserRepositoryBase {
+public interface MongoUserRepositoryBase {
 
     boolean changePassword(String oldPassword, String newPassword, String username);
 

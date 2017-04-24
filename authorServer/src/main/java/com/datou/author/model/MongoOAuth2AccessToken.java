@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Arrays;
 import java.util.Objects;
 
-@Document
+@Document(collection="mongoOAuth2AccessToken")
 public class MongoOAuth2AccessToken {
 
     @Id

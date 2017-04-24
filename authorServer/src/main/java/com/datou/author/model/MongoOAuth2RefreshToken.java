@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document(collection = "mongoOAuth2RefreshToken")
 public class MongoOAuth2RefreshToken {
 
     @Id

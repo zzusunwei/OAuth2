@@ -26,16 +26,10 @@ import com.google.common.collect.FluentIterable;
 @Component
 public class MongoClientDetailsService implements ClientDetailsService, ClientRegistrationService {
 
-    private final MongoClientDetailsRepository mongoClientDetailsRepository;
-
-    private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public MongoClientDetailsService(final MongoClientDetailsRepository mongoClientDetailsRepository,
-                                     final PasswordEncoder passwordEncoder) {
-        this.mongoClientDetailsRepository = mongoClientDetailsRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+	@Autowired
+    private MongoClientDetailsRepository mongoClientDetailsRepository;
+	@Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
@@ -48,7 +42,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 
     @Override
     public void addClientDetails(final ClientDetails clientDetails) throws ClientAlreadyExistsException {
-        final MongoClientDetails mongoClientDetails = new MongoClientDetails(clientDetails.getClientId(),
+        MongoClientDetails mongoClientDetails = new MongoClientDetails(clientDetails.getClientId(),
                 passwordEncoder.encode(clientDetails.getClientSecret()),
                 clientDetails.getScope(),
                 clientDetails.getResourceIds(),
@@ -65,7 +59,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 
     @Override
     public void updateClientDetails(ClientDetails clientDetails) throws NoSuchClientException {
-        final MongoClientDetails mongoClientDetails = new MongoClientDetails(clientDetails.getClientId(),
+        MongoClientDetails mongoClientDetails = new MongoClientDetails(clientDetails.getClientId(),
                 clientDetails.getClientSecret(),
                 clientDetails.getScope(),
                 clientDetails.getResourceIds(),
@@ -76,7 +70,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
                 clientDetails.getRefreshTokenValiditySeconds(),
                 clientDetails.getAdditionalInformation(),
                 getAutoApproveScopes(clientDetails));
-        final boolean result = mongoClientDetailsRepository.update(mongoClientDetails);
+        boolean result = mongoClientDetailsRepository.update(mongoClientDetails);
 
         if (!result) {
             throw new NoSuchClientException("No such Client Id");
@@ -85,7 +79,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 
     @Override
     public void updateClientSecret(String clientId, String secret) throws NoSuchClientException {
-        final boolean result = mongoClientDetailsRepository.updateClientSecret(clientId, passwordEncoder.encode(secret));
+        boolean result = mongoClientDetailsRepository.updateClientSecret(clientId, passwordEncoder.encode(secret));
         if (!result) {
             throw new NoSuchClientException("No such client id");
         }
@@ -93,7 +87,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 
     @Override
     public void removeClientDetails(String clientId) throws NoSuchClientException {
-        final boolean result = mongoClientDetailsRepository.deleteByClientId(clientId);
+        boolean result = mongoClientDetailsRepository.deleteByClientId(clientId);
         if (!result) {
             throw new NoSuchClientException("No such client id");
         }
@@ -101,7 +95,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 
     @Override
     public List<ClientDetails> listClientDetails() {
-        final List<MongoClientDetails> all = mongoClientDetailsRepository.findAll();
+        List<MongoClientDetails> all = mongoClientDetailsRepository.findAll();
         return FluentIterable.from(all).transform(toClientDetails()).toList();
     }
 

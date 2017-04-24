@@ -1,13 +1,13 @@
 package com.datou.author.model;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Arrays;
-import java.util.Objects;
-
-@Document
+@Document(collection="mongoOAuth2ClientToken")
 public class MongoOAuth2ClientToken {
 
     @Id
