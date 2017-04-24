@@ -1,14 +1,20 @@
+server:
+  port: 8081
+
 spring:
   data:
     mongodb: 
       host: localhost
       port: 27017
       database: oauth
-      username: oauth
-      password: oauth
-   
-server:
-    port: 8081
+      username: datou
+      password: datou
+      
+logging:
+  config: 
+  path: log/salmon
+  level: 
+    com.datou: debug 
 
 #
 # IMPORTANT NOTICE: 

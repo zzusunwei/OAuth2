@@ -1,4 +1,4 @@
-package com.datou.author;
+package com.datou.author.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,11 +11,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.datou.author.AuthorServerApplication;
+
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class OAuthWebConfig extends WebSecurityConfigurerAdapter {
 	private static final Logger log = LoggerFactory.getLogger(AuthorServerApplication.class);
 	@Autowired
 	private UserDetailsService userDetailsService;

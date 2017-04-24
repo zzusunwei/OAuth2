@@ -1,4 +1,4 @@
-package com.datou.author;
+package com.datou.author.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.AuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 
+import com.datou.author.AuthorServerApplication;
 import com.datou.author.service.MongoApprovalStore;
 import com.datou.author.service.MongoClientDetailsService;
 import com.datou.author.service.MongoClientTokenServices;
@@ -77,23 +78,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.withClientDetails(mongoClientDetailsService)
-				// Confidential client where client secret can be kept safe
-				// (e.g. server side)
-
-				.withClient("confidential").secret("secret")
-				.authorizedGrantTypes("client_credentials", "authorization_code", "refresh_token")
-				.scopes("read", "write").redirectUris("http://localhost:8080/client/").and()
-				// Public client where client secret is vulnerable (e.g. mobile
-				// apps, browsers)
-				.withClient("public") // No secret!
-				.authorizedGrantTypes("client_credentials", "implicit").scopes("read")
-				.redirectUris("http://localhost:8080/client/").and()
-				// Trusted client: similar to confidential client but also
-				// allowed to handle user password
-				.withClient("trusted").secret("secret").authorities("ROLE_TRUSTED_CLIENT")
-				.authorizedGrantTypes("client_credentials", "password", "authorization_code", "refresh_token")
-				.scopes("read", "write").redirectUris("http://localhost:8080/client/");
+		clients.withClientDetails(mongoClientDetailsService);
 	}
 
 	@Bean
