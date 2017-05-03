@@ -79,7 +79,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 				.authenticationManager(authenticationManager).tokenStore(mongoTokenStore)
 				.userDetailsService(userDetailsService).approvalStore(mongoApprovalStore);
 		
-		 endpoints.tokenServices(mongoClientTokenServices);
         // 配置TokenServices参数
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         tokenServices.setTokenStore(endpoints.getTokenStore());
