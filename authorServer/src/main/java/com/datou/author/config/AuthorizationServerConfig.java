@@ -1,5 +1,7 @@
 package com.datou.author.config;
 
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.AuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 
 import com.datou.author.AuthorServerApplication;
 import com.datou.author.service.MongoApprovalStore;
@@ -72,8 +75,20 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 				// grant
 				// If not provided, ResourceOwnerPasswordTokenGranter is not
 				// configured
+		
 				.authenticationManager(authenticationManager).tokenStore(mongoTokenStore)
 				.userDetailsService(userDetailsService).approvalStore(mongoApprovalStore);
+		
+		 endpoints.tokenServices(mongoClientTokenServices);
+        // 配置TokenServices参数
+        DefaultTokenServices tokenServices = new DefaultTokenServices();
+        tokenServices.setTokenStore(endpoints.getTokenStore());
+        tokenServices.setSupportRefreshToken(false);
+        tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
+        tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
+        tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30)); // 30天
+        endpoints.tokenServices(tokenServices);
+	
 	}
 
 	@Override

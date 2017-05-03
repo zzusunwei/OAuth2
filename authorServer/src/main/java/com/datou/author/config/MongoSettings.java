@@ -56,4 +56,11 @@ public class MongoSettings {
     public void setPassword(String password) {
         this.password = password;
     }
+
+	@Override
+	public String toString() {
+		return "MongoSettings [host=" + host + ", port=" + port + ", database=" + database + ", username=" + username
+				+ ", password=" + password + "]";
+	}
+    
 }
