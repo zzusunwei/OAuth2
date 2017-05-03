@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8085
 
 spring:
   data:
@@ -7,8 +7,8 @@ spring:
       host: localhost
       port: 27017
       database: oauth
-      username: datou
-      password: datou
+      username: root
+      password: root
       
 logging:
   config: 

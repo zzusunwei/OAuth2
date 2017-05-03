@@ -1,3 +1,4 @@
 /target/
 /.factorypath
 /.springBeans
+/.apt_generated/
